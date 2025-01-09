@@ -78,7 +78,7 @@ However, we have also noticed some misunderstandings about the functional positi
 **windows users please download git bash tool first** [link](https://git-scm.com/downloads/win)
 
 ```bash
-git clone https://github.com/TeamWiseFlow/wiseflow.git
+git clone https://github.com/tyloch/wiseflow-artur.git
 ```
 
 ### 2. Execute the install_pocketbase script in the root directory
