@@ -84,13 +84,13 @@ class GeneralInfoExtractor:
                     focus_statement = f"{focus_statement}Explanation: {expl}\n"
 
         if is_chinese(focus_statement):
-            self.get_info_prompt = f'''你将被给到一段使用<text></text>标签包裹的网页文本，请分别按如下关注点对网页文本提炼摘要。关注点列表及其解释如下：
+            self.get_info_prompt = f'''You will be given webpage text wrapped in <text></text> tags. Please extract summaries according to the following focus points. The list of focus points and their explanations are as follows:
 
 {focus_statement}\n
-在提炼摘要时，请遵循以下原则：
-- 理解每个关注点的含义以及进一步的解释（如有），确保摘要与关注点强相关并符合解释（如有）的范围
-- 摘要应当详实、充分，使用简体中文（如果原文是英文，请翻译成简体中文）
-- 摘要信息务必忠于原文'''
+When extracting summaries, please follow these principles:
+- Understand the meaning of each focus point and its further explanation (if any), ensure summaries are strongly relevant and within the scope of explanations (if any)
+- Summaries should be detailed and comprehensive, use simplified Chinese (if original text is in English, please translate to simplified Chinese)
+- Summary information must be faithful to the original text'''
 
             self.get_info_suffix = '''请对关注点逐一生成摘要，不要遗漏任何关注点，如果网页文本与关注点无关，可以对应输出"NA"。输出结果整体用三引号包裹，三引号内不要有其他内容。如下是输出格式示例：
 """

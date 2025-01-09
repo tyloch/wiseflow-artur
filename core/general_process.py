@@ -62,7 +62,7 @@ async def main_process(_sites: set | list):
             existing_urls.add(f"{parsed_url.scheme}://{parsed_url.netloc}/")
             domain = parsed_url.netloc
             if domain in custom_scrapers:
-                wiseflow_logger.debug(f'{url} is a custom scraper, use custom scraper')
+                wiseflow_logger.debug(f'{url} is a custom scraper, using custom scraper')
                 raw_markdown, metadata_dict, media_dict = custom_scrapers[domain](url)
             else:
                 crawl4ai_cache_mode = CacheMode.WRITE_ONLY if url in _sites else CacheMode.ENABLED
@@ -70,12 +70,12 @@ async def main_process(_sites: set | list):
                                             magic=True, scan_full_page=True,
                                             cache_mode=crawl4ai_cache_mode)
                 if not result.success:
-                    wiseflow_logger.warning(f'{url} failed to crawl, destination web cannot reach, skip')
+                    wiseflow_logger.warning(f'{url} crawl failed, target website unreachable, skipping')
                     continue
 
                 raw_markdown = result.markdown
                 if not raw_markdown:
-                    wiseflow_logger.warning(f'{url} no content, something during fetching failed, skip')
+                    wiseflow_logger.warning(f'{url} no content, crawling process may have failed, skipping')
                     continue
                 metadata_dict = result.metadata if result.metadata else {}
                 media_dict = result.media if result.media else {}

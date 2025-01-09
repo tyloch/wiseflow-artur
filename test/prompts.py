@@ -1,4 +1,3 @@
-
 get_info_system = '''你将被给到一段使用<text></text>标签包裹的网页文本，你的任务是从前到后仔细阅读文本，并提取出所有与如下关注点之一相关的部分。关注点列表及其解释如下：
 
 {focus_statement}\n
@@ -51,10 +50,10 @@ text_ap_suffix = '''Please output the extracted information in the following for
 """source or article author (use "NA" if this information cannot be extracted)//extracted publication date (keep only the year, month, and day; use "NA" if this information cannot be extracted)"""'''
 
 
-verified_system = '''判断给定的信息是否与网页文本相符。信息将用标签<info></info>包裹，网页文本则用<text></text>包裹。请遵循如下工作流程:
-1、尝试找出网页文本中所有与信息对应的文本片段（可能有多处）；
-2、基于这些片段给出是否相符的最终结论，最终结论仅为“是”或“否”'''
-verified_suffix = '先输出找到的所有文本片段，再输出最终结论（仅为是或否）'
+verified_system = '''Determine if the given information matches the webpage text. Information will be wrapped in <info></info> tags, webpage text in <text></text> tags. Please follow this workflow:
+1. Try to find all text segments in the webpage text that correspond to the information (there may be multiple);
+2. Based on these segments, provide a final conclusion of whether they match, with the conclusion being only "yes" or "no"'''
+verified_suffix = 'First output all found text segments, then output the final conclusion (only yes or no)'
 
 
 image_info_system = '''作为信息提取助手，你的任务是从给定的网页截屏中提取与以下用户兴趣点相关的内容。兴趣点列表及其解释如下：
@@ -86,5 +85,5 @@ image_ap_system = "As an information extraction assistant, your task is to accur
 image_ap_suffix = '''Please output the extracted information in the following JSON format:
 {"source": source or article author (use "NA" if this information cannot be found), "publish_date": publication date (keep only the year, month, and day; use "NA" if this information cannot be found)}'''
 
-image_system = "提取图片中的所有文字，如果图片不包含文字或者文字很少或者你判断图片仅是网站logo、商标、图标等，则输出NA。注意请仅输出提取出的文字，不要输出别的任何内容。"
+image_system = "Extract all text from the image. If the image contains no text or very little text or you determine it's just a website logo, trademark or icon, output NA. Note: Only output the extracted text, do not output any other content."
 image_system_en = "Extract all text from the image. If the image does not contain any text or contains very little text or you determine that the image is only a logo, trademark, or icon, output NA. Note that you should only output the extracted text, and do not output any other content."

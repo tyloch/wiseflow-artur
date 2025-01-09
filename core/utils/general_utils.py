@@ -54,7 +54,7 @@ def is_chinese(string):
 
 
 def extract_and_convert_dates(input_string):
-    # 定义匹配不同日期格式的正则表达式
+    # Define regular expressions to match different date formats
     if not isinstance(input_string, str):
         return None
 

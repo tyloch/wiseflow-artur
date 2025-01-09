@@ -31,7 +31,7 @@ def normalize_url(url: str, base_url: str) -> str:
         return ''
     """
     if "<" in url and url.endswith(">"):
-        # 暂时应对 crawl4ai 的特殊情况
+        # Temporarily handle special case for crawl4ai
         part1, part2 = url.split("<")
         if part2.startswith("http"):
             url = part2[:-1]
@@ -47,12 +47,12 @@ def normalize_url(url: str, base_url: str) -> str:
         _url = url
     else:
         _url = urljoin(base_url, url)
-    # 处理url中path部分的多余斜杠
+    # Handle excess slashes in URL path
     parsed = urlparse(_url)
     path = parsed.path
-    # 将连续的多个/替换为单个/
+    # Replace multiple consecutive slashes with a single slash
     normalized_path = re.sub(r'/+', '/', path)
-    # 重新组装url
+    # Reassemble URL
     _url = f"{parsed.scheme}://{parsed.netloc}{normalized_path}"
     if parsed.query:
         _url = f"{_url}?{parsed.query}"
@@ -70,7 +70,7 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
         if -1 in [left_bracket, right_paren] or left_bracket > right_paren:
             return text
         
-        # 检查左括号前的文本是否包含至少2个有效字符
+        # Check if text before left bracket contains at least 2 valid characters
         prefix = text[:left_bracket]
         pre_valid_chars = [c for c in prefix if not c.isdigit() and c not in common_chars]
         if len(pre_valid_chars) >= 50:
@@ -84,18 +84,18 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
         if len(suf_valid_chars) >= 36:
             return text
 
-        # 处理图片标记 ![alt](src)
+        # Process image markers ![alt](src)
         img_pattern = r'!\[(.*?)\]\((.*?)\)'
         matches = re.findall(img_pattern, text)
         
         for alt, src in matches:
-            # 替换为新格式 §alt||src§
+            # Replace with new format §alt||src§
             text = text.replace(f'![{alt}]({src})', f'§{alt}||{src}§')
             
-        # 找到所有[part0](part1)格式的片段
+        # Find all fragments in [part0](part1) format
         link_pattern = r'\[(.*?)\]\((.*?)\)'
         matches = re.findall(link_pattern, text)
-        # 从text中去掉所有matches部分
+        # Remove all matches from text
         for link_text, link_url in matches:
             text = text.replace(f'[{link_text}]({link_url})', '')
 
@@ -112,26 +112,26 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
         text = text.strip()
         
         for link_text, link_url in matches:
-            # 处理 \"***\" 格式的片段
+            # Process \"***\" format fragments
             quote_pattern = r'\"(.*?)\"'
-            # 提取所有引号包裹的内容
+            # Extract all quote-wrapped content
             link_alt = ''.join(re.findall(quote_pattern, link_url))
             if link_alt not in link_text:
                 link_text = f"{link_text} {link_alt}"
-            # 去掉所有引号包裹的内容
+            # Remove all quote-wrapped content
             _url = re.sub(quote_pattern, '', link_url).strip()
             if not _url or _url.startswith('#'):
                 continue
             url = normalize_url(_url, base_url)
             if not url:
                 continue
-            # 检查链接是否是常见文件类型或顶级域名
+            # Check if link is a common file type or top-level domain
             has_common_ext = any(url.endswith(ext) for ext in common_file_exts)
             has_common_tld = any(url.endswith(tld) or url.endswith(tld + '/') for tld in common_tlds)
             if has_common_ext or has_common_tld:
                 continue
 
-            # 分离§§内的内容和后面的内容
+            # Separate content inside §§ and content after it
             link_text = link_text.strip()
             inner_matches = re.findall(img_marker_pattern, link_text)
             for alt, src in inner_matches:
@@ -141,7 +141,7 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
             if text not in link_text:
                 link_text = f"{link_text} {text}"
 
-            # 去除首尾的common_chars和数字
+            # Remove all quote-wrapped content
             link_text = link_text.strip()
             if link_text:
                 if url not in link_dict:
@@ -214,19 +214,19 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
             continue
         html_text = html_text.replace(f'![{alt}]({src})', f" {alt}[{key}]§to_be_recognized_by_visual_llm_{src[1:]}§") # to avoid conflict with the url pattern
     
-    # 接下来要处理所有的[]()文本了
+    # Next, process all []() text
     link_pattern = r'\[(.*?)\]\((.*?)\)'
     matches = re.findall(link_pattern, html_text)
     for match in matches:
         link_text, link_url = match
-        original_markdown = f'[{link_text}]({link_url})'  # 重建原始的 markdown 链接格式
-        # 处理 \"***\" 格式的片段
+        original_markdown = f'[{link_text}]({link_url})'  # Rebuild original markdown link format
+        # Process \"***\" format fragments
         quote_pattern = r'\"(.*?)\"'
-        # 提取所有引号包裹的内容
+        # Extract all quote-wrapped content
         link_alt = ''.join(re.findall(quote_pattern, link_url))
         if link_alt not in link_text:
             link_text = f"{link_text} {link_alt}"
-        # 去掉所有引号包裹的内容
+        # Remove all quote-wrapped content
         _url = re.sub(quote_pattern, '', link_url).strip()
         if not _url or _url.startswith('#'):
             continue
@@ -238,7 +238,7 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
 
         html_text = html_text.replace(original_markdown, f'{link_text}[{key}]')
     
-    # 处理文本中的"野 url"
+    # Process "wild URLs" in the text
     url_pattern = r'((?:https?://|www\.)[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])'
     matches = re.findall(url_pattern, html_text)
     for url in matches:
@@ -249,9 +249,9 @@ def deep_scraper(raw_markdown: str, base_url: str, used_img: list[str]) -> tuple
         text_link_map[key] = url
         html_text = html_text.replace(url, f'[{key}]')
     
-    # 去掉文本中所有残存的[]和![]
-    html_text = html_text.replace('![]', '')  # 去掉![]
-    html_text = html_text.replace('[]', '')  # 去掉[]
+    # Remove all remaining [] and ![] in the text
+    html_text = html_text.replace('![]', '')  # Remove ![]
+    html_text = html_text.replace('[]', '')  # Remove []
 
     return link_dict, (html_text, text_link_map)
         

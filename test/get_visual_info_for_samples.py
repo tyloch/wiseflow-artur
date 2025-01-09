@@ -10,14 +10,14 @@ from core.llms.openai_wrapper import openai_llm as llm
 async def main(task: list):
     vl_model = os.environ.get("VL_MODEL", "")
     if not vl_model:
-        print("错误: VL_MODEL not set, will skip extracting info from img, some info may be lost!")
+        print("Error: VL_MODEL not set, will skip extracting info from img, some info may be lost!")
         sys.exit(1)
     cache = {}
     for url in task:
         llm_output = await llm([{"role": "user",
                                 "content": [{"type": "image_url", "image_url": {"url": url, "detail": "high"}},
                                                 {"type": "text",
-                                                "text": "提取图片中的所有文字，如果图片不包含文字或者文字很少或者你判断图片仅是网站logo、商标、图标等，则输出NA。注意请仅输出提取出的文字，不要输出别的任何内容。"}]}],
+                                                "text": "Extract all text from the image. If the image contains no text or very little text or you determine it's just a website logo, trademark or icon, output NA. Note: Only output the extracted text, do not output any other content."}]}],
                                    model=vl_model)
         cache[url] = llm_output
     return cache
@@ -59,7 +59,7 @@ if __name__ == '__main__':
             matches = re.findall(pattern, des)
             if matches:
                 for img_url in matches:
-                    # 替换原始描述中的标记
+                    # Replace markers in original description
                     des = des.replace(f'§to_be_recognized_by_visual_llm_{img_url}§', img_url)
                     link_dict[url] = des
                     if img_url in to_be_replaces:
@@ -78,10 +78,10 @@ if __name__ == '__main__':
                     to_be_replaces[img_url] = ["content"]
 
         start_time = time.time()
-        print(f"开始提取图片信息")
+        print(f"Starting to extract image information")
         result = asyncio.run(main(list(to_be_replaces.keys())))
         end_time = time.time()
-        print(f"提取图片信息完成，耗时: {end_time - start_time}秒")
+        print(f"Image information extraction complete, time taken: {end_time - start_time} seconds")
 
         for img_url, content in result.items():
             for url in to_be_replaces[img_url]:
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                     link_dict[url] = link_dict[url].replace(img_url, content)
         
         if len(link_dict) != len(sample['link_dict']):
-            print(f"提取图片信息后，link_dict长度发生变化，原长度: {len(sample['link_dict'])}, 新长度: {len(link_dict)}")
+            print(f"After extracting image information, link_dict length changed, original length: {len(sample['link_dict'])}, new length: {len(link_dict)}")
         
         sample['text'] = text
         sample['link_dict'] = link_dict

@@ -9,18 +9,18 @@ def isURL(string):
 
 
 def isChinesePunctuation(char):
-    # 定义中文标点符号的Unicode编码范围
+    # Define Unicode encoding range for Chinese punctuation marks
     chinese_punctuations = set(range(0x3000, 0x303F)) | set(range(0xFF00, 0xFFEF))
-    # 检查字符是否在上述范围内
+    # Check if character is within the above range
     return ord(char) in chinese_punctuations
 
 
 def is_chinese(string):
     """
-    使用火山引擎其实可以支持更加广泛的语言检测，未来可以考虑 https://www.volcengine.com/docs/4640/65066
-    判断字符串中大部分是否是中文
-    :param string: {str} 需要检测的字符串
-    :return: {bool} 如果大部分是中文返回True，否则返回False
+    Could support broader language detection using Volcano Engine in the future, consider: https://www.volcengine.com/docs/4640/65066
+    Determine if most of the string is Chinese
+    :param string: {str} String to be detected
+    :return: {bool} Returns True if most is Chinese, False otherwise
     """
     pattern = re.compile(r'[^\u4e00-\u9fa5]')
     non_chinese_count = len(pattern.findall(string))
