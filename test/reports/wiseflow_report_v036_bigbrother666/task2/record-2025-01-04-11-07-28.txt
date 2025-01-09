@@ -1,15 +1,15 @@
 focus statement: 
-//大模型技术突破与创新//
-解释：包括新算法与模型，新的研究成果
-//AI应用市场规模与增长预测//
-解释：提供AI市场的最新统计数据、增长趋势和未来预测，帮助读者了解行业发展方向的信息
-//大模型落地行业应用趋势//
-解释：分析大模型在各个行业（如医疗、金融、制造、教育）的应用现状和发展前景，展示AI在实际业务中的价值。
-//大模型企业应用案例//
-解释：分享企业如何利用大模型提升效率、降低成本或创新产品的具体案例，展示AI的实际效益。
-//大模型创业故事//
-解释：介绍大模型初创公司的发展历程、融资情况和成功经验，激励创业者和投资者。
-//好用的AI工具及其适用的范围，和同类型工具的对比//
+//Large Model Technology Breakthroughs and Innovation//
+Explanation: Including new algorithms and models, new research results
+//AI Application Market Size and Growth Forecast//
+Explanation: Provide latest statistics, growth trends and future predictions for AI market to help readers understand industry development direction
+//Large Model Industry Application Trends//
+Explanation: Analyze current status and development prospects of large models in various industries (like healthcare, finance, manufacturing, education), demonstrate AI value in actual business
+//Large Model Enterprise Application Cases//
+Explanation: Share specific cases of how enterprises use large models to improve efficiency, reduce costs or innovate products, demonstrate actual AI benefits
+//Large Model Startup Stories//
+Explanation: Introduce development journey, financing situation and success experience of large model startups, inspire entrepreneurs and investors
+//Useful AI Tools and Their Applicable Scope, and Comparison with Similar Tools//
 
 
 raw materials in: 775d04
